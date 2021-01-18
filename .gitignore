@@ -1,4 +1,10 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+REACT_APP_API_KEY=AIzaSyDEoRc80I8ISUekDY61D25U2tm4LcY3HYo
+REACT_APP_AUTH_DOMAIN=trial-58898.firebaseapp.com
+REACT_APP_DATABASE_URL=https://trial-58898-default-rtdb.firebaseio.com
+REACT_APP_PROJECT_ID=trial-58898
+REACT_APP_STORAGE_BUCKET=trial-58898.appspot.com
+REACT_APP_MESSAGING_SENDER_ID=975059319737
 
 # dependencies
 /node_modules
