@@ -1,6 +1,6 @@
 import _ from "lodash";
 import React from "react";
-import { Table } from "semantic-ui-react";
+import { Icon, Table } from "semantic-ui-react";
 
 function exampleReducer(state: any, action: any) {
   switch (action.type) {
@@ -25,7 +25,8 @@ function exampleReducer(state: any, action: any) {
 }
 
 function SortableTable(props: any) {
-  const { products } = props;
+  const { products, getProductData } = props;
+  console.log("data: ", products);
   const [state, dispatch] = React.useReducer(exampleReducer, {
     column: null,
     data: products,
@@ -38,9 +39,7 @@ function SortableTable(props: any) {
         <Table.Row>
           <Table.HeaderCell
             sorted={column === "name" ? direction : null}
-            onClick={() =>
-              dispatch({ type: "CHANGE_SORT", column: "name" })
-            }
+            onClick={() => dispatch({ type: "CHANGE_SORT", column: "name" })}
           >
             Name
           </Table.HeaderCell>
@@ -58,6 +57,7 @@ function SortableTable(props: any) {
           >
             Category
           </Table.HeaderCell>
+          <Table.HeaderCell>Actions</Table.HeaderCell>
         </Table.Row>
       </Table.Header>
       <Table.Body>
@@ -66,6 +66,9 @@ function SortableTable(props: any) {
             <Table.Cell>{product.name}</Table.Cell>
             <Table.Cell>{product.price}</Table.Cell>
             <Table.Cell>{product.category}</Table.Cell>
+            <Table.Cell>
+              <Icon name={"close"} onClick={() => getProductData(product.id)} />
+            </Table.Cell>
           </Table.Row>
         ))}
       </Table.Body>

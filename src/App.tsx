@@ -12,10 +12,21 @@ import { v4 as uuidv4 } from "uuid";
 function App() {
   const db = firebase.firestore();
   const [products, setProducts] = React.useState([]);
-  const [addModal, openAddModal] = React.useState(false);
+  const [productModal, openProductModal] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
-  const { value: name, bind: bindName, reset: resetName } = useInput("");
-  const { value: price, bind: bindPrice, reset: resetPrice } = useInput("");
+  const [productID, setProductID] = React.useState("");
+  const {
+    value: name,
+    bind: bindName,
+    reset: resetName,
+    setValue: setName,
+  } = useInput("");
+  const {
+    value: price,
+    bind: bindPrice,
+    reset: resetPrice,
+    setValue: setPrice,
+  } = useInput("");
   // const [nameError, setNameError] = React.useState(false);
   const [selectedCategory, setSelectedCategory] = React.useState({
     name: `Processor`,
@@ -36,33 +47,35 @@ function App() {
   };
 
   const handleAddProduct = () => {
-    openAddModal(true);
+    openProductModal(true);
   };
 
   const handleSubmit = async (event: any) => {
     // Block native form submission.
     event.preventDefault();
     setLoading(true);
-    const newId = uuidv4();
+    const newId = productID === "" ? uuidv4() : productID;
     db.collection("products")
       .doc(newId)
       .set({
+        id: newId,
         name: name,
         price: price,
         category: selectedCategory.name,
       })
       .then(function () {
-        openAddModal(false);
+        openProductModal(false);
         fetchData();
       })
       .catch(function (error) {
         console.error("Error writing document: ", error);
-        openAddModal(false);
+        openProductModal(false);
         fetchData();
       });
   };
 
   const resetFields = () => {
+    setProductID("");
     resetName();
     resetPrice();
     setSelectedCategory({
@@ -70,41 +83,62 @@ function App() {
       dataKey: "processor",
     });
   };
+
+  const getProductData = (id: string) => {
+    const currentProduct: any = products.find(
+      (product: any) => product.id === id
+    );
+    const category: any = categoryList.find(
+      (item: any) => item.name === currentProduct.category
+    );
+    setName(currentProduct.name);
+    setPrice(currentProduct.price);
+    setSelectedCategory(category);
+    setProductID(id);
+    console.log("id: ", id);
+    console.log("current data: ", currentProduct);
+  };
+
+  const closeProductModal = () => {
+    resetFields();
+    openProductModal(false);
+  };
   return (
     <div className="App">
       <h1>Trial</h1>
       {_.isEmpty(products) || loading ? (
         <h1> Loading</h1>
       ) : (
-        <SortableTable products={products} />
+        <SortableTable products={products} getProductData={getProductData} />
       )}
       <>
         <Modal
           size={"tiny"}
-          open={addModal}
-          onClose={() => openAddModal(false)}
-          onOpen={() => openAddModal(true)}
+          open={productModal || productID !== ""}
+          onClose={() => {
+            closeProductModal();
+          }}
+          onOpen={() => {
+            openProductModal(true);
+          }}
           closeIcon={true}
-          className="add-new-product-modal"
+          className="product-modal"
           trigger={
             <Button
               primary={true}
-              className="add-new-product-btn"
+              className="product-btn"
               onClick={handleAddProduct}
             >
               Add New Product
             </Button>
           }
         >
-          <Modal.Header className="add-new-product-modal__header">
-            Add New Product
+          <Modal.Header className="product-modal__header">
+            {productID === "" ? "Add New Product" : "Update Product"}
           </Modal.Header>
           <Modal.Content>
-            <Grid.Row columns={1} className="add-new-product-modal__content">
-              <Form
-                className="add-new-product-modal__form"
-                onSubmit={handleSubmit}
-              >
+            <Grid.Row columns={1} className="product-modal__content">
+              <Form className="product-modal__form" onSubmit={handleSubmit}>
                 <Form.Input
                   size="large"
                   label="Name"
@@ -113,9 +147,9 @@ function App() {
                   {...bindName}
                   required
                 />
-                <Form.Group className="add-new-product-modal__group">
+                <Form.Group className="product-modal__group">
                   <Form.Field
-                    className="add-new-product-modal__group__country"
+                    className="product-modal__group__country"
                     size="large"
                   >
                     <label htmlFor="Country">Country</label>
@@ -146,7 +180,7 @@ function App() {
                     </Dropdown>
                   </Form.Field>
                   <Form.Input
-                    className="add-new-product-modal__group__price"
+                    className="product-modal__group__price"
                     size="large"
                     label="Price"
                     type="Number"
@@ -161,7 +195,7 @@ function App() {
                   primary={true}
                   value="Submit"
                 >
-                  Add
+                  {productID === "" ? "Add" : 'Update'}
                 </Form.Field>
               </Form>
             </Grid.Row>
