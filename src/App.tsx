@@ -103,13 +103,33 @@ function App() {
     resetFields();
     openProductModal(false);
   };
+
+  const deleteProduct = (id: string) => {
+    setLoading(true);
+    db.collection("products")
+      .doc(id)
+      .delete()
+      .then(function () {
+        console.log("Document successfully deleted!");
+        fetchData();
+      })
+      .catch(function (error) {
+        console.error("Error removing document: ", error);
+        fetchData();
+      });
+  };
+
   return (
     <div className="App">
       <h1>Trial</h1>
       {_.isEmpty(products) || loading ? (
         <h1> Loading</h1>
       ) : (
-        <SortableTable products={products} getProductData={getProductData} />
+        <SortableTable
+          products={products}
+          getProductData={getProductData}
+          deleteProduct={deleteProduct}
+        />
       )}
       <>
         <Modal
@@ -195,7 +215,7 @@ function App() {
                   primary={true}
                   value="Submit"
                 >
-                  {productID === "" ? "Add" : 'Update'}
+                  {productID === "" ? "Add" : "Update"}
                 </Form.Field>
               </Form>
             </Grid.Row>
