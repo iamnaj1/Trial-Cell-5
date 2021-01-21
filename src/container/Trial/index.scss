@@ -1,0 +1,10 @@
+.trial {
+  &__options {
+    display: flex;
+    padding: 0 10px;
+    .ui.product-btn {
+      margin-left: 10px;
+      background-color: #349af8 !important;
+    }
+  }
+}
