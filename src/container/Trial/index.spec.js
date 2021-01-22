@@ -12,7 +12,7 @@ describe("Trial", () => {
     wrapper = shallow(<Trial />);
   });
   it("Should Render Cell 5 Trial Title", () => {
-    expect(wrapper.find("h1.trial-header").text()).toEqual("Trial");
+    expect(wrapper.find("h1.trial-header").text()).toEqual("Trial Cell 5");
   });
   it("Should be able to render Table", () => {
     setTimeout(() => {
