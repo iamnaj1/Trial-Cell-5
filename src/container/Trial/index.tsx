@@ -216,16 +216,16 @@ function Trial() {
                   />
                   <Form.Group className="product-modal__group">
                     <Form.Field
-                      className="product-modal__group__country"
+                      className="product-modal__group__category"
                       size="large"
                     >
-                      <label htmlFor="Country">Country</label>
+                      <label htmlFor="Category">Category</label>
                       <Dropdown
-                        id="Country"
+                        id="Category"
                         className="selection"
                         openOnFocus
                         trigger={
-                          <span className="country-label">
+                          <span className="category-label">
                             {selectedCategory.name}
                           </span>
                         }
