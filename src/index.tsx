@@ -3,19 +3,6 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import firebase from "firebase";
-import { AppConfig } from "./config";
-
-const config = {
-  apiKey: AppConfig.apiKey,
-  authDomain: AppConfig.authDomain,
-  databaseURL: AppConfig.databaseURL,
-  projectId: AppConfig.projectId,
-  storageBucket: AppConfig.storageBucket,
-  messagingSenderId: AppConfig.messagingSenderId,
-};
-
-firebase.initializeApp(config);
 
 ReactDOM.render(<App />, document.getElementById("root"));
 

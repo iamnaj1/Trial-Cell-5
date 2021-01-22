@@ -149,7 +149,7 @@ function Trial() {
 
   return (
     <div className="trial">
-      <h1>Trial</h1>
+      <h1 className="trial-header">Trial</h1>
       <div className="trial__options">
         <ProductSearch
           searchValue={searchValue}
