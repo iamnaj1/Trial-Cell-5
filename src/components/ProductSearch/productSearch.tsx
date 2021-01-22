@@ -5,21 +5,17 @@ import "./index.scss";
 import { useInput } from "../../hooks/useInput";
 
 const ProductSearch = (props: any) => {
-  const { setSearchValue, searchValue } = props;
+  const { setSearchValue } = props;
   const {
     value: data,
-    bind: bindSearch,
-    setValue: setSearch,
-  } = useInput(searchValue);
-
-  useEffect(() => {
-    setSearch(searchValue);
-  }, [searchValue]);
+    bind: bindSearch, 
+  } = useInput('');
+ 
 
   return (
     <Input
       className={
-        _.isEmpty(searchValue)
+        _.isEmpty(data)
           ? "product-search"
           : "product-search--active "
       }

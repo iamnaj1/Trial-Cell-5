@@ -16,14 +16,15 @@ import { useInput } from "../../hooks/useInput";
 import { categoryList } from "../../constants/category";
 import ProductSearch from "../../components/ProductSearch/productSearch";
 import SortableTable from "../../components/table";
+import { errorMessage, success } from "../../utils/notifications";
 
 function Trial() {
   const db = firebase.firestore();
   const [products, setProducts] = React.useState([]);
   const [productModal, openProductModal] = React.useState(false);
+  const [nameError, setNameError] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [productID, setProductID] = React.useState("");
-  const [searchValue, setSearchValue] = React.useState("");
   const [filteredProducts, setFilteredProducts] = React.useState([]);
   const {
     value: name,
@@ -62,9 +63,19 @@ function Trial() {
     openProductModal(true);
   };
 
+  const nameExist = () => {
+    const exist =
+      products.findIndex((product: any) => product.name === name) !== -1;
+    return exist;
+  };
+
   const handleSubmit = async (event: any) => {
     // Block native form submission.
     event.preventDefault();
+    if (nameExist()) {
+      setNameError(true);
+      return;
+    }
     setLoading(true);
     const newId = productID === "" ? uuidv4() : productID;
     db.collection("products")
@@ -76,11 +87,18 @@ function Trial() {
         category: selectedCategory.name,
       })
       .then(function () {
+        success(
+          `${
+            productID === ""
+              ? "Product successfully created!"
+              : "Product successfully updated!"
+          }`
+        );
         openProductModal(false);
         fetchData();
       })
       .catch(function (error) {
-        console.error("Error writing document: ", error);
+        errorMessage(`Action Failed!`);
         openProductModal(false);
         fetchData();
       });
@@ -107,8 +125,6 @@ function Trial() {
     setPrice(currentProduct.price);
     setSelectedCategory(category);
     setProductID(id);
-    console.log("id: ", id);
-    console.log("current data: ", currentProduct);
   };
 
   const closeProductModal = () => {
@@ -122,12 +138,12 @@ function Trial() {
       .doc(id)
       .delete()
       .then(function () {
-        console.log("Document successfully deleted!");
         fetchData();
         handleSearchProduct("");
+        success(`Product Successfully Deleted!`);
       })
       .catch(function (error) {
-        console.error("Error removing document: ", error);
+        errorMessage("Action Failed");
         fetchData();
         handleSearchProduct("");
       });
@@ -148,7 +164,6 @@ function Trial() {
         product.name.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1
       );
     });
-    console.log("filteredProducts: ", filteredProducts);
     handleFilteredProducts(filteredProducts);
     setLoading(false);
   };
@@ -157,10 +172,7 @@ function Trial() {
     <Segment className="trial">
       <h1 className="trial-header">Trial Cell 5</h1>
       <div className="trial__options">
-        <ProductSearch
-          searchValue={searchValue}
-          setSearchValue={handleSearchProduct}
-        />
+        <ProductSearch searchValue={""} setSearchValue={handleSearchProduct} />
         <>
           <Modal
             size={"tiny"}
@@ -196,6 +208,11 @@ function Trial() {
                     placeholder="Name"
                     {...bindName}
                     required
+                    error={
+                      nameError
+                        ? { content: "Product Name already exist!" }
+                        : false
+                    }
                   />
                   <Form.Group className="product-modal__group">
                     <Form.Field
