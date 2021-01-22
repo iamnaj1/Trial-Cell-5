@@ -271,7 +271,7 @@ function Trial() {
         </>
       </div>
 
-      {_.isEmpty(filteredProducts) || loading ? (
+      {_.isEmpty(filteredProducts) && loading ? (
         <h1>loading</h1>
       ) : _.isEmpty(filteredProducts) && !loading ? (
         <h1> Empty Data</h1>
