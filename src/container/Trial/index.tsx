@@ -2,7 +2,14 @@ import "./index.scss";
 import * as React from "react";
 import firebase from "firebase";
 import "semantic-ui-css/semantic.min.css";
-import { Button, Dropdown, Form, Grid, Modal } from "semantic-ui-react";
+import {
+  Button,
+  Dropdown,
+  Form,
+  Grid,
+  Modal,
+  Segment,
+} from "semantic-ui-react";
 import _ from "lodash";
 import { v4 as uuidv4 } from "uuid";
 import { useInput } from "../../hooks/useInput";
@@ -30,20 +37,18 @@ function Trial() {
     reset: resetPrice,
     setValue: setPrice,
   } = useInput("");
-  // const [nameError, setNameError] = React.useState(false);
+
   const [selectedCategory, setSelectedCategory] = React.useState({
     name: `Processor`,
     dataKey: "processor",
   });
 
   React.useEffect(() => {
-    document.title = "Trial Cell 5";
-    console.log("fetchData: ");
     fetchData();
   }, []);
 
   React.useEffect(() => {
-    handleSearchProduct('')
+    handleSearchProduct("");
   }, [products]);
 
   const fetchData = async () => {
@@ -51,7 +56,6 @@ function Trial() {
     const data: any = await db.collection("products").get();
     setProducts(data.docs.map((doc: any) => doc.data()));
     resetFields();
-    setLoading(false);
   };
 
   const handleAddProduct = () => {
@@ -120,22 +124,24 @@ function Trial() {
       .then(function () {
         console.log("Document successfully deleted!");
         fetchData();
+        handleSearchProduct("");
       })
       .catch(function (error) {
         console.error("Error removing document: ", error);
         fetchData();
+        handleSearchProduct("");
       });
   };
 
   const handleSearchProduct = (name: string) => {
-    console.log("name: ", name);
     searchFilteredProduct(name);
   };
 
+  const handleFilteredProducts = (products: any) =>
+    setFilteredProducts((state) => (state = products));
+
   const searchFilteredProduct = async (name: string) => {
     setLoading(true);
-    console.log("products: ", products);
-    console.log("name: ", name);
     const searchValue = name ? name : "";
     const filteredProducts: any = await _.filter(products, (product: any) => {
       return (
@@ -143,13 +149,13 @@ function Trial() {
       );
     });
     console.log("filteredProducts: ", filteredProducts);
-    setFilteredProducts(filteredProducts);
+    handleFilteredProducts(filteredProducts);
     setLoading(false);
   };
 
   return (
-    <div className="trial">
-      <h1 className="trial-header">Trial</h1>
+    <Segment className="trial">
+      <h1 className="trial-header">Trial Cell 5</h1>
       <div className="trial__options">
         <ProductSearch
           searchValue={searchValue}
@@ -249,7 +255,9 @@ function Trial() {
       </div>
 
       {_.isEmpty(filteredProducts) || loading ? (
-        <h1> Loading</h1>
+        <h1>loading</h1>
+      ) : _.isEmpty(filteredProducts) && !loading ? (
+        <h1> Empty Data</h1>
       ) : (
         <SortableTable
           products={filteredProducts}
@@ -257,7 +265,7 @@ function Trial() {
           deleteProduct={deleteProduct}
         />
       )}
-    </div>
+    </Segment>
   );
 }
 

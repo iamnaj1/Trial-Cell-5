@@ -1,5 +1,5 @@
 import "./App.css";
-import * as React from "react"; 
+import * as React from "react";
 import Trial from "./container/Trial";
 
 import firebase from "firebase";
@@ -16,6 +16,10 @@ const config = {
 
 firebase.initializeApp(config);
 function App() {
+  React.useEffect(() => {
+    document.title = "Trial Cell 5";
+  }, []);
+  
   return (
     <div className="App">
       <Trial />
