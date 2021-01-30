@@ -1,0 +1,2 @@
+
+export const SET_CHARACTERS_DATA = 'SET_CHARACTERS_DATA';
