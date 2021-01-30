@@ -72,7 +72,7 @@ function Trial() {
   const handleSubmit = async (event: any) => {
     // Block native form submission.
     event.preventDefault();
-    if (nameExist()) {
+    if (productID === "" && nameExist()) {
       setNameError(true);
       return;
     }
@@ -270,11 +270,10 @@ function Trial() {
           </Modal>
         </>
       </div>
-
-      {_.isEmpty(filteredProducts) && loading ? (
-        <h1>loading</h1>
-      ) : _.isEmpty(filteredProducts) && !loading ? (
+      {_.isEmpty(filteredProducts) ? (
         <h1> Empty Data</h1>
+      ) : loading ? (
+        <h1>loading</h1>
       ) : (
         <SortableTable
           products={filteredProducts}
