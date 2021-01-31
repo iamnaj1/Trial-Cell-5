@@ -1,7 +1,7 @@
 import "./App.css";
 import * as React from "react";
 import Trial from "./container/Trial";
-import Moogle from "./container/Moogle";
+import Moogle from "./container/moogle";
 
 import firebase from "firebase";
 import { AppConfig } from "./config";
