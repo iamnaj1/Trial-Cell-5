@@ -23,8 +23,8 @@ function App() {
   
   return (
     <div className="App">
-      <Moogle/> 
       <Trial />
+      <Moogle/> 
     </div>
   );
 }
