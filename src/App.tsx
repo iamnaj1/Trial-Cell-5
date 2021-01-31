@@ -1,6 +1,7 @@
 import "./App.css";
 import * as React from "react";
 import Trial from "./container/Trial";
+import Moogle from "./container/Moogle";
 
 import firebase from "firebase";
 import { AppConfig } from "./config";
@@ -22,6 +23,7 @@ function App() {
   
   return (
     <div className="App">
+      <Moogle/> 
       <Trial />
     </div>
   );

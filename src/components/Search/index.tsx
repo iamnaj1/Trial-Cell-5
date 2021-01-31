@@ -4,8 +4,8 @@ import _ from "lodash";
 import "./index.scss";
 import { useInput } from "../../hooks/useInput";
 
-const ProductSearch = (props: any) => {
-  const { setSearchValue } = props;
+const Search = (props: any) => {
+  const { setSearchValue, type} = props;
   const {
     value: data,
     bind: bindSearch, 
@@ -16,8 +16,8 @@ const ProductSearch = (props: any) => {
     <Input
       className={
         _.isEmpty(data)
-          ? "product-search"
-          : "product-search--active "
+          ? "search"
+          : "search--active "
       }
       action={{
         icon: "search",
@@ -31,9 +31,9 @@ const ProductSearch = (props: any) => {
         }
       }}
       {...bindSearch}
-      placeholder={"Search Product Name"}
+      placeholder={`Search ${type} Name`}
     />
   );
 };
 
-export default ProductSearch;
+export default Search;

@@ -1,11 +1,6 @@
-.trial {
-    &__options {
-      display: flex;
-      padding: 0 10px;
-      .ui.product-btn {
-        margin-left: 10px;
-        background-color: #349af8 !important;
-      }
-    }
-  }
-  
+.moogle-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0;
+}

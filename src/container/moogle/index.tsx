@@ -3,28 +3,35 @@ import { connect } from "react-redux";
 import get from "lodash/get";
 import "./index.scss";
 import _ from "lodash";
-import ProductSearch from "../../components/ProductSearch/productSearch";
-import { fetchCharactersData } from "../../actions/characters";
+import Search from "../../components/Search";
+import {
+  fetchCharactersData,
+  setCharacterData,
+} from "../../actions/characters";
 import { useEffect } from "react";
+import CharacterSection from "../../components/CharacterSection";
 
 interface MoogleProps {
   charData: any;
   getCharactersData: (name: string) => void;
+  setData: (data: any) => void;
 }
 
 const Moogle = (props: MoogleProps) => {
+  const { charData } = props;
+
   const handleSearchProduct = (name: string) => {
-    const { getCharactersData } = props;
-    getCharactersData(name);
+    const { getCharactersData, setData } = props;
+    if (name.trim() === "") {
+      setData([]);
+    } else {
+      getCharactersData(name);
+    }
   };
-
-  useEffect(() => {
-    const { charData } = props;
-  }, [props.charData]);
-
   return (
     <div className="moogle-container">
-      <ProductSearch setSearchValue={handleSearchProduct} type={"Character"} />
+      <Search setSearchValue={handleSearchProduct} type={"Character"} />
+      <CharacterSection charData={charData} />
     </div>
   );
 };
@@ -35,6 +42,7 @@ const mapStateToProps = (state: {}) => ({
 
 const mapDispatchToProps = {
   getCharactersData: (search: string) => fetchCharactersData(search),
+  setData: (data: any) => setCharacterData(data),
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Moogle);

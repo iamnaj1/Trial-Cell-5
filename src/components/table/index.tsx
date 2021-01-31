@@ -1,7 +1,7 @@
 import _ from "lodash";
 import React from "react";
 import { Icon, Table } from "semantic-ui-react";
-import './index.scss';
+import "./index.scss";
 
 function exampleReducer(state: any, action: any) {
   switch (action.type) {
@@ -26,8 +26,7 @@ function exampleReducer(state: any, action: any) {
 }
 
 function SortableTable(props: any) {
-  const { products, getProductData, deleteProduct} = props;
-  console.log("data: ", products);
+  const { products, getProductData, deleteProduct } = props;
   const [state, dispatch] = React.useReducer(exampleReducer, {
     column: null,
     data: products,
@@ -68,7 +67,10 @@ function SortableTable(props: any) {
             <Table.Cell>{product.price}</Table.Cell>
             <Table.Cell>{product.category}</Table.Cell>
             <Table.Cell>
-              <Icon name={"pencil"} onClick={() => getProductData(product.id)} />
+              <Icon
+                name={"pencil"}
+                onClick={() => getProductData(product.id)}
+              />
               <Icon name={"close"} onClick={() => deleteProduct(product.id)} />
             </Table.Cell>
           </Table.Row>

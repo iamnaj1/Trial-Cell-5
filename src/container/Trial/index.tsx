@@ -14,7 +14,7 @@ import _ from "lodash";
 import { v4 as uuidv4 } from "uuid";
 import { useInput } from "../../hooks/useInput";
 import { categoryList } from "../../constants/category";
-import ProductSearch from "../../components/ProductSearch/productSearch";
+import Search from "../../components/Search";
 import SortableTable from "../../components/table";
 import { errorMessage, success } from "../../utils/notifications";
 
@@ -172,7 +172,7 @@ function Trial() {
     <Segment className="trial">
       <h1 className="trial-header">Trial Cell 5</h1>
       <div className="trial__options">
-        <ProductSearch searchValue={""} setSearchValue={handleSearchProduct} />
+        <Search type={"Product"} setSearchValue={handleSearchProduct} />
         <>
           <Modal
             size={"tiny"}
